@@ -1,16 +1,16 @@
 on init
    set_control_par($INST_ICON_ID,$CONTROL_PAR_HIDE,$HIDE_WHOLE_CONTROL)
    {Set up Background parameters}
-   set_ui_height_px(270)
-   make_perfview
-   message("Massive Metal Bass Stealth DI")
+   set_ui_height_px(311)
+   make_perfview 
+   message("Colossal Bass II StingRay DI")
    set_key_color(0,$KEY_COLOR_WHITE)
 
-   {Instrument Mode Label}
+   {Instrument Mode Label
     declare ui_label $InstMode(1,1)
     set_text($InstMode,"")
     set_control_par_str(get_ui_id($InstMode),  $CONTROL_PAR_PICTURE, "InstMode")
-    move_control_px($InstMode,  503, 189)
+    move_control_px($InstMode,  503, 189) }
    
    {Instrument Mode Display}
    declare ui_label $InstMode1(1,1)
@@ -18,24 +18,24 @@ on init
    set_text($InstMode1,"")
    hide_part($InstMode1, 16)
 
-   {Humanize Label}
+   {Humanize Label
    declare ui_label $Humanize(1,1)
     set_text($Humanize,"")
     set_control_par_str(get_ui_id($Humanize),  $CONTROL_PAR_PICTURE, "Humanize")
-    move_control_px($Humanize,  301, 189)
+    move_control_px($Humanize,  301, 189) }
   
 
    {Alternate Picking Control}
 
     declare ui_slider $ResetTime(0, 600)
-    $ResetTime := 200
-    set_control_par_str(get_ui_id($ResetTime),  $CONTROL_PAR_PICTURE, "Knob1")
-    move_control_px($ResetTime,  435, 180)
+    $ResetTime := 250
+    set_control_par_str(get_ui_id($ResetTime),  $CONTROL_PAR_PICTURE, "CB2Knob")
+    move_control_px($ResetTime,  520, 75)
     set_control_par(get_ui_id($ResetTime), $CONTROL_PAR_MOUSE_BEHAVIOUR, -500)
     make_persistent($ResetTime)
     read_persistent_var($ResetTime)
     declare ui_label $ResetTimeDisplay(1,1)
-    move_control_px($ResetTimeDisplay,442,245)
+    move_control_px($ResetTimeDisplay,523,137)
     set_text($ResetTimeDisplay,$ResetTime & " ms")
     set_control_par(get_ui_id($ResetTimeDisplay), $CONTROL_PAR_FONT_TYPE, 17)
     hide_part($ResetTimeDisplay,1)
@@ -45,19 +45,26 @@ on init
     set_text($PickStatus,"")
     {move_control($PickStatus,6,11)}
     set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, "AlternatePicking")
-    move_control_px($PickStatus,  505, 212)
+    move_control_px($PickStatus,  491, 50)
+    {hide_part($PickStatus, 1)}
 
 
    
     declare ui_switch $Bypass
-    move_control_px($Bypass,307,217)
+    move_control_px($Bypass,272,60)
+	set_control_par(get_ui_id($Bypass), $CONTROL_PAR_HEIGHT, 20)
+	set_control_par(get_ui_id($Bypass), $CONTROL_PAR_WIDTH, 90)
     set_control_par(get_ui_id($Bypass), $CONTROL_PAR_FONT_TYPE, 17) 
     
    {Initial Variable Parameters}
    
    {Random Parameter}
    declare $new_vel
-   declare $Value := 10
+   declare ui_value_edit $Value (1,30 ,1)
+   $Value := 10
+   move_control_px ($Value,272,90)
+   set_control_par(get_ui_id($Value), $CONTROL_PAR_WIDTH, 90)
+   set_control_par(get_ui_id($Value), $CONTROL_PAR_FONT_TYPE, 17)
    declare $by_value := 1
 
    {Alternate Pick Parameters}
@@ -144,12 +151,12 @@ on note
       
    if ($AlternateFamily = 0 or $UpPick = 0 or $ENGINE_UPTIME - $LastTime >= $ResetTime)
       $UpPick := 1
-      set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, !Family_Name[$SelectedFamily])
-      
+      set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, !Family_Name[$SelectedFamily])    
+
    else
       $UpPick := 0
       set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, !Family_Name[$AlternateFamily])
-      
+
    end if
    $LastTime := $ENGINE_UPTIME
 
@@ -159,14 +166,14 @@ if ($EVENT_NOTE=12)
      hide_part($PickStatus,16)
      hide_part($ResetTime,16)
      hide_part($ResetTimeDisplay,16)
-     move_control_px($InstMode1,  505, 213)
+     move_control_px($InstMode1,  491, 50)
 end if
 if ($EVENT_NOTE=13)
     set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, "AlternatePicking")
     hide_part($InstMode1,16)
-    move_control_px($ResetTimeDisplay,442,245)
-    move_control_px($PickStatus,  505, 212)
-    move_control_px($ResetTime,  435, 180)
+    move_control_px($ResetTimeDisplay,523,137)
+    move_control_px($PickStatus,  491, 50)
+    move_control_px($ResetTime,  520, 75)
     hide_part($ResetTimeDisplay,1)
 end if
 if ($EVENT_NOTE=14)
@@ -174,7 +181,7 @@ if ($EVENT_NOTE=14)
      hide_part($PickStatus,16)
      hide_part($ResetTime,16)
      hide_part($ResetTimeDisplay,16)
-     move_control_px($InstMode1,  505, 213)
+     move_control_px($InstMode1,  491, 50)
     
 end if
 if ($EVENT_NOTE=15)
@@ -182,7 +189,7 @@ if ($EVENT_NOTE=15)
      hide_part($PickStatus,16)
      hide_part($ResetTime,16)
      hide_part($ResetTimeDisplay,16)
-     move_control_px($InstMode1,  505, 213)
+     move_control_px($InstMode1,  491, 50)
      
 end if
 
@@ -199,4 +206,3 @@ end if
    
 end on
        
-

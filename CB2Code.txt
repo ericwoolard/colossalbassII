@@ -1,32 +1,19 @@
 on init
-   set_control_par($INST_ICON_ID,$CONTROL_PAR_HIDE,$HIDE_WHOLE_CONTROL)
-   {Set up Background parameters}
-   set_ui_height_px(311)
-   make_perfview 
-   message("Colossal Bass II StingRay DI")
-   set_key_color(0,$KEY_COLOR_WHITE)
-
-   {Instrument Mode Label
-    declare ui_label $InstMode(1,1)
-    set_text($InstMode,"")
-    set_control_par_str(get_ui_id($InstMode),  $CONTROL_PAR_PICTURE, "InstMode")
-    move_control_px($InstMode,  503, 189) }
+    set_control_par($INST_ICON_ID,$CONTROL_PAR_HIDE,$HIDE_WHOLE_CONTROL)
    
-   {Instrument Mode Display}
-   declare ui_label $InstMode1(1,1)
-   move_control($InstMode1,6,11)
-   set_text($InstMode1,"")
-   hide_part($InstMode1, 16)
+    {Set up Background parameters}
+    set_ui_height_px(311)
+    make_perfview 
+    message("Colossal Bass II StingRay DI")
+    set_key_color(0,$KEY_COLOR_WHITE)
+   
+    {Instrument Mode Display}
+    declare ui_label $InstMode1(1,1)
+    move_control($InstMode1,6,11)
+    set_text($InstMode1,"")
+    hide_part($InstMode1, 16)
 
-   {Humanize Label
-   declare ui_label $Humanize(1,1)
-    set_text($Humanize,"")
-    set_control_par_str(get_ui_id($Humanize),  $CONTROL_PAR_PICTURE, "Humanize")
-    move_control_px($Humanize,  301, 189) }
-  
-
-   {Alternate Picking Control}
-
+    {Alternate Picking Control}
     declare ui_slider $ResetTime(0, 600)
     $ResetTime := 250
     set_control_par_str(get_ui_id($ResetTime),  $CONTROL_PAR_PICTURE, "CB2Knob")
@@ -40,65 +27,59 @@ on init
     set_control_par(get_ui_id($ResetTimeDisplay), $CONTROL_PAR_FONT_TYPE, 17)
     hide_part($ResetTimeDisplay,1)
  
-   {Pick Status Display}
+    {Pick Status Display}
     declare ui_label $PickStatus(1,1)
     set_text($PickStatus,"")
-    {move_control($PickStatus,6,11)}
     set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, "AlternatePicking")
     move_control_px($PickStatus,  491, 50)
-    {hide_part($PickStatus, 1)}
 
-
-   
+    {Bypass switch for Velocity Humanization}
     declare ui_switch $Bypass
     move_control_px($Bypass,272,60)
-	set_control_par(get_ui_id($Bypass), $CONTROL_PAR_HEIGHT, 20)
-	set_control_par(get_ui_id($Bypass), $CONTROL_PAR_WIDTH, 90)
-    set_control_par(get_ui_id($Bypass), $CONTROL_PAR_FONT_TYPE, 17) 
-    
-   {Initial Variable Parameters}
+    set_control_par(get_ui_id($Bypass), $CONTROL_PAR_HEIGHT, 20)
+    set_control_par(get_ui_id($Bypass), $CONTROL_PAR_WIDTH, 90)
+    set_control_par(get_ui_id($Bypass), $CONTROL_PAR_FONT_TYPE, 17)
    
-   {Random Parameter}
-   declare $new_vel
-   declare ui_value_edit $Value (1,30 ,1)
-   $Value := 10
-   move_control_px ($Value,272,90)
-   set_control_par(get_ui_id($Value), $CONTROL_PAR_WIDTH, 90)
-   set_control_par(get_ui_id($Value), $CONTROL_PAR_FONT_TYPE, 17)
-   declare $by_value := 1
+    {Velocity Humanization Param}
+    declare $new_vel
+    declare ui_value_edit $Value (1,30 ,1)
+    $Value := 10
+    move_control_px ($Value,272,90)
+    set_control_par(get_ui_id($Value), $CONTROL_PAR_WIDTH, 90)
+    set_control_par(get_ui_id($Value), $CONTROL_PAR_FONT_TYPE, 17)
+    declare $by_value := 1
 
-   {Alternate Pick Parameters}
-   declare $UpPick := 0
-   declare $LastTime := 0
-   declare $RRCorrectGroup := 0 
+    {Alternate Pick Parameters}
+    declare $UpPick := 0
+    declare $LastTime := 0
+    declare $RRCorrectGroup := 0 
 
-   declare $SelectedFamily := 21
-   declare $AlternateFamily := 22
+    declare $SelectedFamily := 21
+    declare $AlternateFamily := 22
 
-   declare const $NumSamples := 5
-   declare $DownGroup := 1
-   declare $UpGroup := 1
+    declare const $NumSamples := 5
+    declare $DownGroup := 1
+    declare $UpGroup := 1
 
-   declare !Family_Name[25]
-   declare %Family_StartGroup[25]
-   declare %Family_Length[25]
-   declare %Family_RR[25] 
+    declare !Family_Name[25]
+    declare %Family_StartGroup[25]
+    declare %Family_Length[25]
+    declare %Family_RR[25] 
 
-   !Family_Name[0] := "None"
-   %Family_StartGroup[0] := 0
-   %Family_Length[0] := 0
+    !Family_Name[0] := "None"
+    %Family_StartGroup[0] := 0
+    %Family_Length[0] := 0
 
-   {Assign imported groups to custom RR}
+    {Assign imported groups to custom RR}
+    declare const $AltDownPickFamily := 21
+    !Family_Name[21] := "AltDown"
+    %Family_StartGroup[21] := find_group("Down 6")
+    %Family_Length[21] := 5
 
-   declare const $AltDownPickFamily := 21
-   !Family_Name[21] := "AltDown"
-   %Family_StartGroup[21] := find_group("Down 6")
-   %Family_Length[21] := 5
-
-   declare const $AltUpPickFamily := 22
-   !Family_Name[22] := "AltUp"
-   %Family_StartGroup[22] := find_group("Up 1")
-   %Family_Length[22] := 5
+    declare const $AltUpPickFamily := 22
+    !Family_Name[22] := "AltUp"
+    %Family_StartGroup[22] := find_group("Up 1")
+    %Family_Length[22] := 5
 
 end on
 
@@ -107,102 +88,99 @@ on ui_control ($ResetTime)
 end on
 
 on ui_control ($Bypass)
- if ($Bypass = 0)
-   set_control_par(get_ui_id($Bypass), $CONTROL_PAR_FONT_TYPE, 17) 
- end if 
- if ($Bypass = 1)
-   set_control_par(get_ui_id($Bypass), $CONTROL_PAR_FONT_TYPE, 16) 
- end if
+    if ($Bypass = 0)
+        set_control_par(get_ui_id($Bypass), $CONTROL_PAR_FONT_TYPE, 17) 
+    end if 
+    if ($Bypass = 1)
+        set_control_par(get_ui_id($Bypass), $CONTROL_PAR_FONT_TYPE, 16) 
+    end if
 end on
 
-   {Calculate Round Robin Position}   
+{Calculate Round Robin Position}
 function RoundRobin
-   if ($UpPick = 0) 
-      $RRCorrectGroup := %Family_StartGroup[$AlternateFamily] + %Family_RR[$AlternateFamily]      
-      %Family_RR[$AlternateFamily] := %Family_RR[$AlternateFamily] + 1
-      if (%Family_RR[$AlternateFamily] >= %Family_Length[$AlternateFamily])
-         %Family_RR[$AlternateFamily] := 0
-      end if
-   else
-      $RRCorrectGroup := %Family_StartGroup[$SelectedFamily] + %Family_RR[$SelectedFamily]
-      %Family_RR[$SelectedFamily] := %Family_RR[$SelectedFamily] + 1
-      if (%Family_RR[$SelectedFamily] >= %Family_Length[$SelectedFamily])
-         %Family_RR[$SelectedFamily] := 0
-      end if
-   end if
+    if ($UpPick = 0) 
+        $RRCorrectGroup := %Family_StartGroup[$AlternateFamily] + %Family_RR[$AlternateFamily]      
+        %Family_RR[$AlternateFamily] := %Family_RR[$AlternateFamily] + 1
+        if (%Family_RR[$AlternateFamily] >= %Family_Length[$AlternateFamily])
+            %Family_RR[$AlternateFamily] := 0
+        end if
+    else
+        $RRCorrectGroup := %Family_StartGroup[$SelectedFamily] + %Family_RR[$SelectedFamily]
+        %Family_RR[$SelectedFamily] := %Family_RR[$SelectedFamily] + 1
+        if (%Family_RR[$SelectedFamily] >= %Family_Length[$SelectedFamily])
+            %Family_RR[$SelectedFamily] := 0
+        end if
+    end if
 end function
 
 on note
 
-  {Randomize Velocity} 
-  if ($Bypass = 0)
+    {Randomize Velocity}
+    if ($Bypass = 0)
         $new_vel := $EVENT_VELOCITY + random(-$Value,$Value)
-		if ($new_vel < 1)
-			$new_vel := 1
-		end if
-		if ($new_vel > 127)
-			$new_vel := 127
-		end if
-		change_velo ($EVENT_ID, $new_vel)
-  end if
+        if ($new_vel < 1)
+            $new_vel := 1
+        end if
+        if ($new_vel > 127)
+            $new_vel := 127
+        end if
 
-   {Control Alternate Pick Display}
-      disallow_group($ALL_GROUPS)
+        change_velo ($EVENT_ID, $new_vel)
+    end if
+
+    {Control Alternate Pick Display}
+    disallow_group($ALL_GROUPS)
       
-   if ($AlternateFamily = 0 or $UpPick = 0 or $ENGINE_UPTIME - $LastTime >= $ResetTime)
-      $UpPick := 1
-      set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, !Family_Name[$SelectedFamily])    
+    if ($AlternateFamily = 0 or $UpPick = 0 or $ENGINE_UPTIME - $LastTime >= $ResetTime)
+        $UpPick := 1
+        set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, !Family_Name[$SelectedFamily])    
+    else
+        $UpPick := 0
+        set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, !Family_Name[$AlternateFamily])
+    end if
+    $LastTime := $ENGINE_UPTIME
 
-   else
-      $UpPick := 0
-      set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, !Family_Name[$AlternateFamily])
-
-   end if
-   $LastTime := $ENGINE_UPTIME
-
-  {Instrument Mode Display Switching}
-if ($EVENT_NOTE=12)
-     set_control_par_str(get_ui_id($InstMode1),  $CONTROL_PAR_PICTURE, "DownPicking")
-     hide_part($PickStatus,16)
-     hide_part($ResetTime,16)
-     hide_part($ResetTimeDisplay,16)
-     move_control_px($InstMode1,  491, 50)
-end if
-if ($EVENT_NOTE=13)
-    set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, "AlternatePicking")
-    hide_part($InstMode1,16)
-    move_control_px($ResetTimeDisplay,523,137)
-    move_control_px($PickStatus,  491, 50)
-    move_control_px($ResetTime,  520, 75)
-    hide_part($ResetTimeDisplay,1)
-end if
-if ($EVENT_NOTE=14)
-     set_control_par_str(get_ui_id($InstMode1),  $CONTROL_PAR_PICTURE, "DownSliding")
-     hide_part($PickStatus,16)
-     hide_part($ResetTime,16)
-     hide_part($ResetTimeDisplay,16)
-     move_control_px($InstMode1,  491, 50)
+    {Instrument Mode Display Switching}
+    if ($EVENT_NOTE=12)
+        set_control_par_str(get_ui_id($InstMode1),  $CONTROL_PAR_PICTURE, "DownPicking")
+        hide_part($PickStatus,16)
+        hide_part($ResetTime,16)
+        hide_part($ResetTimeDisplay,16)
+        move_control_px($InstMode1,  491, 50)
+    end if
+    if ($EVENT_NOTE=13)
+        set_control_par_str(get_ui_id($PickStatus),  $CONTROL_PAR_PICTURE, "AlternatePicking")
+        hide_part($InstMode1,16)
+        move_control_px($ResetTimeDisplay,523,137)
+        move_control_px($PickStatus,  491, 50)
+        move_control_px($ResetTime,  520, 75)
+        hide_part($ResetTimeDisplay,1)
+    end if
+    if ($EVENT_NOTE=14)
+        set_control_par_str(get_ui_id($InstMode1),  $CONTROL_PAR_PICTURE, "DownSliding")
+        hide_part($PickStatus,16)
+        hide_part($ResetTime,16)
+        hide_part($ResetTimeDisplay,16)
+        move_control_px($InstMode1,  491, 50)
     
-end if
-if ($EVENT_NOTE=15)
-     set_control_par_str(get_ui_id($InstMode1),  $CONTROL_PAR_PICTURE, "UpSliding")
-     hide_part($PickStatus,16)
-     hide_part($ResetTime,16)
-     hide_part($ResetTimeDisplay,16)
-     move_control_px($InstMode1,  491, 50)
-     
-end if
+    end if
+    if ($EVENT_NOTE=15)
+        set_control_par_str(get_ui_id($InstMode1),  $CONTROL_PAR_PICTURE, "UpSliding")
+        hide_part($PickStatus,16)
+        hide_part($ResetTime,16)
+        hide_part($ResetTimeDisplay,16)
+        move_control_px($InstMode1,  491, 50)
+    end if
 
-   {Allow Script RR and Non-Alt Groups}
-   call RoundRobin 
-   allow_group($RRCorrectGroup)
-   allow_group(find_group("Down 1"))
-   allow_group(find_group("Down 2"))
-   allow_group(find_group("Down 3"))
-   allow_group(find_group("Down 4"))
-   allow_group(find_group("Down 5"))
-   allow_group(find_group("Down Slides"))
-   allow_group(find_group("Up Slides"))
+    {Allow Script RR and Non-Alt Groups}
+    call RoundRobin 
+    allow_group($RRCorrectGroup)
+    allow_group(find_group("Down 1"))
+    allow_group(find_group("Down 2"))
+    allow_group(find_group("Down 3"))
+    allow_group(find_group("Down 4"))
+    allow_group(find_group("Down 5"))
+    allow_group(find_group("Down Slides"))
+    allow_group(find_group("Up Slides"))
    
 end on
-       
